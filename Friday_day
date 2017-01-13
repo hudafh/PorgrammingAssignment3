@@ -1,0 +1,63 @@
+#30-day Mortality Rate from Heart Attack -> 11
+#[17] "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure"      
+#[23] "Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia" 
+
+
+best<- function(state, outcome) {
+  
+  i <- 1
+  j <- 1
+  count <- 0
+  
+  
+  fdata <- read.csv("outcome-of-care-measures.csv")
+
+  if(outcome == "heart_attack")
+    stdata <- subset(fdata, select=c("Provider.Number","Hospital.Name","State","Hospital.30.Day.Death..Mortality..Rates.from.Heart.Attack"))
+  
+  if(outcome == "heart_failure")
+    stdata <- subset(fdata, select=c("Provider.Number","Hospital.Name","State","Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure"))
+  
+  if(outcome == "pneumonia")
+    stdata <- subset(fdata, select=c("Provider.Number","Hospital.Name","State","Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia"))
+  
+  outp <- data.frame()
+
+  for(i in i:nrow(stdata)){
+    
+    if(stdata[i,"State"] == state){
+      if(!stdata[i,4] == "Not Available"){
+      outp[j,"State"] <- stdata[i,"State"]
+      outp[j,"Provider.Number"] <- stdata[i,"Provider.Number"]
+      outp[j,outcome] <- stdata[i,4]
+      outp[j,"Hospital.Name"] <- stdata[i,"Hospital.Name"]
+      j<- j+1
+      count <- count+1
+      }
+    }
+  }
+  
+  porra <- c(30:20)
+  print(sort(porra))
+message("outcome is: ",outcome )
+message("outp outcome is: ")
+#print(outp[outcome])
+final <- outp[outcome]
+#final <- sort.list(final[outcome])
+final <- sort(final[outcome])
+#final2 <- sort(as.integer(final))
+print(final)
+print(class(final))
+#print(colnames(final)== outcome)
+#final2 <- order(final[outcome])
+#print(order(final2))
+#print(order(final))
+#final <- outp[final,]
+#print(final[1])
+#print(outp[final2,])
+#final2 <- outp[final3[1],]
+#print(class(final2))
+#print(colnames(final2))
+#print(final2["Hospital.Name"])
+
+} 
