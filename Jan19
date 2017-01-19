@@ -35,29 +35,26 @@ best<- function(state, outcome) {
       count <- count+1
       }
     }
+    
   }
   
-  porra <- c(30:20)
-  print(sort(porra))
-message("outcome is: ",outcome )
-message("outp outcome is: ")
-#print(outp[outcome])
-final <- outp[outcome]
-#final <- sort.list(final[outcome])
-final <- sort(final[outcome])
-#final2 <- sort(as.integer(final))
-print(final)
-print(class(final))
-#print(colnames(final)== outcome)
-#final2 <- order(final[outcome])
-#print(order(final2))
-#print(order(final))
-#final <- outp[final,]
-#print(final[1])
-#print(outp[final2,])
-#final2 <- outp[final3[1],]
-#print(class(final2))
-#print(colnames(final2))
-#print(final2["Hospital.Name"])
+  print(outp)
+  message("-------------------------")
+  final <- outp[,outcome]
+  lo <- as.numeric(levels(final)[final])
+
+  message("___________________")
+  lo <- sort(lo)
+
+  print(lo[1])
+
+  
+  for (i in 1:nrow(outp)){
+    temp <-outp[i,outcome]
+    temp <- as.numeric(levels(temp)[temp])
+    if(temp == lo[1])
+      print(as.character(outp[i,"Hospital.Name"]))
+  }
+
 
 } 
