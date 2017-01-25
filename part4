@@ -7,6 +7,7 @@ rankall <- function(outcome, num = "best") {
   j <- 1
   k <- 1
   t <- 1
+  numbr <- num
   
   fdata <- read.csv("outcome-of-care-measures.csv")
   print(num)
@@ -26,10 +27,14 @@ rankall <- function(outcome, num = "best") {
   
   
   states <-levels(stdata[,2])
-  outp <- data.frame()
+  
   
   for(k in 1:length(states)){
-    
+    outp <- data.frame()
+    j <- 1
+    x <- 1
+    names <- c()
+    #print(states[k])  
     for(i in 1:nrow(stdata)){
     
     if(stdata[i,"State"] == states[k]){
@@ -43,35 +48,59 @@ rankall <- function(outcome, num = "best") {
       
     }
     }
+    #message("output:")
+    #print(outp)
     
     final <- outp[,outcome]
     lo <- as.numeric(levels(final)[final])
-    
+    if(num == "best")
+      numbr <- 1
+    if(num == "worst")
+      numbr <- length(lo)
     
     lo <- sort(lo)
-    #print(lo[])
+    #print(lo)
+   # message("length of lo -> ", length(lo))
     
-    if(num == "best")
-      num <- 1
-    if(num == "worst")
-      num <- length(lo)
+    #merda <- length(lo)
     
-    for (t in 1:nrow(outp)){
-      temp <-outp[t,outcome]
-      temp <- as.numeric(levels(temp)[temp])
-      if(!is.na(lo[num])){
-        if(temp == lo[num]){
-          message(as.character(outp[t,"Hospital"])," ", states[k])
-          message("temp == lo[num]: ",temp, lo[num])
+      
+      #message("merda is---> ",merda)
+    
+   # message("numbr -> ",numbr)
+    if(!is.na(lo[numbr])){
+      t <- 1
+      #message("nrow: ",nrow(outp))
+    #  message("Nth element: ", lo[numbr])
+      for (t in 1:nrow(outp)){
+       # message("t -> ",t)
+        #print(outp[t,outcome])
+        temp <-outp[t,outcome]
+        #message("temp_0 = ", temp)
+        temp <- as.numeric(levels(temp)[temp])
+        #message("temp = ",temp)
+        if(temp == lo[numbr]){
+          names[x] <- as.character(outp[t,"Hospital"])
+          #message(as.character(outp[t,"Hospital"])," ", states[k])
+          x <- x + 1
+          #message("temp == lo[num]: ",temp, lo[numbr])
         }
       
       }
-      else
+      
+      names <-sort(names)  # IT'S NOT SORTING
+      print(names)
+      message("----------------")
+      message(names[1],"   ", states[k])
+      message("_____________ ")
+      message(" ")
+    }
+    else
         message(NA,"   ", states[k])
   }
   
   
-  }
+  
  
   
 }
