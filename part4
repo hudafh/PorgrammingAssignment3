@@ -1,4 +1,4 @@
-#30-day Mortality Rate from Heart Attack -> 11
+##30-day Mortality Rate from Heart Attack -> 11
 #[17] "Hospital.30.Day.Death..Mortality..Rates.from.Heart.Failure"      
 #[23] "Hospital.30.Day.Death..Mortality..Rates.from.Pneumonia" 
 
@@ -7,7 +7,10 @@ rankall <- function(outcome, num = "best") {
   j <- 1
   k <- 1
   t <- 1
+  l <- 1
+  f <- 1
   numbr <- num
+  temp_array <- c()
   
   fdata <- read.csv("outcome-of-care-measures.csv")
   print(num)
@@ -33,7 +36,10 @@ rankall <- function(outcome, num = "best") {
     outp <- data.frame()
     j <- 1
     x <- 1
+    z <- 1
+    f <- 1
     names <- c()
+    temp_array <- c()
     #print(states[k])  
     for(i in 1:nrow(stdata)){
     
@@ -59,6 +65,7 @@ rankall <- function(outcome, num = "best") {
       numbr <- length(lo)
     
     lo <- sort(lo)
+    message("lo[numbr] ->",lo[numbr])
     #print(lo)
    # message("length of lo -> ", length(lo))
     
@@ -71,7 +78,8 @@ rankall <- function(outcome, num = "best") {
     if(!is.na(lo[numbr])){
       t <- 1
       #message("nrow: ",nrow(outp))
-    #  message("Nth element: ", lo[numbr])
+      message("Nth element: ", lo[numbr])
+      for(f in 1:numbr){
       for (t in 1:nrow(outp)){
        # message("t -> ",t)
         #print(outp[t,outcome])
@@ -79,8 +87,9 @@ rankall <- function(outcome, num = "best") {
         #message("temp_0 = ", temp)
         temp <- as.numeric(levels(temp)[temp])
         #message("temp = ",temp)
-        if(temp == lo[numbr]){
-          names[x] <- as.character(outp[t,"Hospital"])
+        if(temp == lo[f]){
+          temp_array[x] <- as.character(outp[t,"Hospital"])
+          #names[x] <- as.character(outp[t,"Hospital"])
           #message(as.character(outp[t,"Hospital"])," ", states[k])
           x <- x + 1
           #message("temp == lo[num]: ",temp, lo[numbr])
@@ -88,12 +97,25 @@ rankall <- function(outcome, num = "best") {
       
       }
       
-      names <-sort(names)  # IT'S NOT SORTING
-      print(names)
-      message("----------------")
-      message(names[1],"   ", states[k])
-      message("_____________ ")
-      message(" ")
+      temp_array <- sort(temp_array)
+      for(l in 1:length(temp_array)){
+        names[z] <-temp_array[l]
+        z <- z + 1
+      }
+      }
+      
+      
+      names <-unique(names)  
+      #print(names)
+      if(num == "worst")
+        print(names[length(names)])
+      else
+        print(names[numbr])
+      print(states[k])
+      #message("----------------")
+      #message(names[1],"   ", states[k])
+      #message("_____________ ")
+      #message(" ")
     }
     else
         message(NA,"   ", states[k])
